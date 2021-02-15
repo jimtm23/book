@@ -26,7 +26,18 @@ public class BookService {
         newBook.setAuthor(bookRequest.author());
         newBook.setTitle(bookRequest.title());
         newBook.setDescription(bookRequest.description());
+        newBook.setImage(bookRequest.image());
         return bookRepository.save(newBook);
+    }
+
+    public Book edit(String id, BookRequest bookRequest) {
+        Book book = bookRepository.findById(id).orElse(null);
+        book.setAuthor(bookRequest.author());
+        book.setTitle(bookRequest.title());
+        book.setDescription(bookRequest.description());
+        book.setImage(bookRequest.image());
+        bookRepository.save(book);
+        return book;
     }
 
     public Iterable<Book> findAll() {
@@ -35,15 +46,6 @@ public class BookService {
 
     public Book findById(String id) {
         return bookRepository.findById(id).orElse(null);
-    }
-
-    public Book edit(String id, BookRequest bookRequest) {
-        Book book = bookRepository.findById(id).orElse(null);
-        book.setAuthor(bookRequest.author());
-        book.setTitle(bookRequest.title());
-        book.setDescription(bookRequest.description());
-        bookRepository.save(book);
-        return book;
     }
 
     public void delete(String id) {

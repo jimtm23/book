@@ -32,7 +32,9 @@ public class Book {
     @Field
     private String description;
 
-    @Field
-    private  FileStorage image;
+    @Field String image;
+
+    /*@Field
+    private  FileStorage image;*/
 
 }

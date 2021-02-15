@@ -5,6 +5,7 @@ import com.example.book.model.Book;
 import com.example.book.service.BookService;
 import com.example.book.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,9 +50,8 @@ public class BookController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(value = "/uploadImage", consumes = {"multipart/form-data"})
-    public String uploadImage(@RequestPart String title,
-                              @RequestBody BookRequest book,
+    @PostMapping(value = "/uploadImage", consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    public String uploadImage(@RequestPart Book book,
                               @RequestPart MultipartFile image) {
         fileStorageService.uploadFile(image);
         String message =  "You successfully uploaded " + image.getOriginalFilename() + "!";
