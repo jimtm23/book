@@ -25,6 +25,7 @@ public class BookService {
         Book newBook = new Book();
         newBook.setAuthor(bookRequest.author());
         newBook.setTitle(bookRequest.title());
+        newBook.setDescription(bookRequest.description());
         return bookRepository.save(newBook);
     }
 
@@ -40,7 +41,7 @@ public class BookService {
         Book book = bookRepository.findById(id).orElse(null);
         book.setAuthor(bookRequest.author());
         book.setTitle(bookRequest.title());
-        book.setDesicription(bookRequest.description());
+        book.setDescription(bookRequest.description());
         bookRepository.save(book);
         return book;
     }
@@ -51,7 +52,7 @@ public class BookService {
     }
 
     public List<Book> findAllByTitle(String title) {
-        List<Book> books = bookRepository.findAllByTitle(title);
+        List<Book> books = bookRepository.findAllByTitleLike(title);
         return books;
     }
 }

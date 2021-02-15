@@ -30,7 +30,7 @@ public class Book {
     private String author;
 
     @Field
-    private String desicription;
+    private String description;
 
     @Field
     private  FileStorage image;
