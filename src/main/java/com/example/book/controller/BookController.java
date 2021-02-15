@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.validation.Valid;
+import java.io.IOException;
 
 @CrossOrigin
 @RestController
@@ -49,8 +49,10 @@ public class BookController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/uploadImage")
-    public String uploadImage(@RequestParam("image") MultipartFile image)  {
+    @PostMapping(value = "/uploadImage", consumes = {"multipart/form-data"})
+    public String uploadImage(@RequestPart String title,
+                              @RequestBody BookRequest book,
+                              @RequestPart MultipartFile image) {
         fileStorageService.uploadFile(image);
         String message =  "You successfully uploaded " + image.getOriginalFilename() + "!";
         return message;
