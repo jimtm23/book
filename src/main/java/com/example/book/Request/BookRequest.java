@@ -32,7 +32,5 @@ public class BookRequest {
     @NotNull
     private String description;
 
-    @NotBlank()
-    @NotNull
     private String image;
 }

@@ -58,7 +58,7 @@ public class BookController {
         return message;
     }
 
-    @GetMapping("search/title/{title}")
+    @GetMapping("search/{title}")
     public ResponseEntity<Iterable<Book>> findAllByTitle(@PathVariable String title) {
         Iterable<Book> books = bookService.findAllByTitle(title);
         return ResponseEntity.ok(books);

@@ -54,7 +54,7 @@ public class BookService {
     }
 
     public List<Book> findAllByTitle(String title) {
-        List<Book> books = bookRepository.findAllByTitleLike(title);
+        List<Book> books = bookRepository.findAllByTitleLike("%"+title+"%");
         return books;
     }
 }
