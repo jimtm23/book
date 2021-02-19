@@ -32,18 +32,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @PostConstruct
     void postConstruct() {
-        log.info("RbacAuthorizationFilter initialized!");
+        log.info("JwtRequestFilter initialized!");
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        final String authorizationheader = request.getHeader("Authorization");
+        final String authorizationHeader = request.getHeader("Authorization");
 
         String username = null;
         String jwt  = null;
 
-        if (authorizationheader != null && authorizationheader.startsWith("Bearer ")) {
-            jwt = authorizationheader.substring(7);
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwt = authorizationHeader.substring(7);
             username = jwtUtil.extractuserName(jwt);
         }
 
