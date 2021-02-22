@@ -1,6 +1,7 @@
 package com.example.book.service;
 
 import com.example.book.Request.BookRequest;
+import com.example.book.exception.ResourceNotFoundException;
 import com.example.book.model.Book;
 import com.example.book.model.FileStorage;
 import com.example.book.repository.BookRepository;
@@ -30,6 +31,7 @@ public class BookService {
         return bookRepository.save(newBook);
     }
 
+    @Transactional
     public Book edit(String id, BookRequest bookRequest) {
         Book book = bookRepository.findById(id).orElse(null);
         book.setAuthor(bookRequest.author());
@@ -45,7 +47,13 @@ public class BookService {
     }
 
     public Book findById(String id) {
-        return bookRepository.findById(id).orElse(null);
+        Book thisBook = null;
+        try {
+            thisBook = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not found!"));
+        } catch (ResourceNotFoundException e) {
+            e.printStackTrace();
+        }
+        return thisBook;
     }
 
     public void delete(String id) {

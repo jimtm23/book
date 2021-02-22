@@ -1,12 +1,18 @@
 package com.example.book.controller;
 
+import com.example.book.exception.UserAlreadyExistException;
 import com.example.book.helpers.CrudController;
 import com.example.book.model.User;
 import com.example.book.service.UserRolePermissionService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("user")
@@ -27,9 +33,19 @@ public class UserController implements CrudController<User> {
     }
 
     @Override
-    public ResponseEntity<User> create(User t) {
-        User user = userService.createUser(t);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<?> create(User user) {
+
+        User newUser;
+        try {
+            newUser = userService.createUser(user);
+        } catch (UserAlreadyExistException e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("user", user);
+            response.put("error", e.getMessage());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        return ResponseEntity.created(URI.create("/user/show/" + newUser.getId())).build();
     }
 
     @Override

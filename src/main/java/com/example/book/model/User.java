@@ -16,7 +16,6 @@ import java.util.Collection;
 import static org.springframework.data.couchbase.core.mapping.id.GenerationStrategy.UNIQUE;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Document
@@ -50,5 +49,6 @@ public class User {
     @Field
     private Boolean isEnabled = true;
 
+    @Field
     private Collection<Role> roles;
 }

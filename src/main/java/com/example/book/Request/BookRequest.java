@@ -3,7 +3,6 @@ package com.example.book.Request;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -17,7 +16,6 @@ import javax.validation.constraints.NotNull;
 @Accessors(fluent = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class BookRequest {
 
     @NotBlank()

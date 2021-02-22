@@ -1,7 +1,7 @@
 package com.example.book.service;
 
 import com.example.book.model.User;
-import com.example.book.repository.UserEntityRepository;
+import com.example.book.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,12 +14,12 @@ import java.util.ArrayList;
 public class CustomUserDetailService implements UserDetailsService {
 
     @Autowired
-    UserEntityRepository userEntityRepository;
+    UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-        User user = userEntityRepository.findByUsername(userName);
+        User user = userRepository.findByUsername(userName);
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),new ArrayList<>());
     }

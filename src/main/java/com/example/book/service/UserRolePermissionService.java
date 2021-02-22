@@ -1,11 +1,12 @@
 package com.example.book.service;
 
+import com.example.book.exception.UserAlreadyExistException;
 import com.example.book.model.Permission;
 import com.example.book.model.Role;
 import com.example.book.model.User;
 import com.example.book.repository.PermissionRepository;
 import com.example.book.repository.RoleRepository;
-import com.example.book.repository.UserEntityRepository;
+import com.example.book.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class UserRolePermissionService {
     
     @Autowired
-    UserEntityRepository userEntityRepository;
+    UserRepository userRepository;
 
     @Autowired
     PermissionRepository permissionRepository;
@@ -26,37 +27,46 @@ public class UserRolePermissionService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-	public User createUser(User user) {
+	public User createUser(User user) throws UserAlreadyExistException {
+
+        if (checkIfEmailExist(user.getEmail())) {
+            throw new UserAlreadyExistException("Email Already Exist!");
+        }
+
+        if (checkIfUsernameExist(user.getUsername())) {
+            throw new UserAlreadyExistException("Username Already Exist!");
+        }
+
 	    user.setPassword(passwordEncoder.encode(user.getPassword()));
-		return userEntityRepository.save(user);
+		return userRepository.save(user);
 	}
 	public Iterable<User> listUser() {
-	    return userEntityRepository.findAll();
+	    return userRepository.findAll();
     }
     public User getUserById(String id) {
-	    return userEntityRepository.findById(id).orElse(null);
+	    return userRepository.findById(id).orElse(null);
     }
     public Boolean deleteUser(String id) {
-	    User user = userEntityRepository.findById(id).orElse(null);
-        userEntityRepository.delete(user);
+	    User user = userRepository.findById(id).orElse(null);
+        userRepository.delete(user);
 	    return true;
     }
 
     public User editUser(String id, User userDetail) {
-	    User user = userEntityRepository.findById(id).orElse(null);
+	    User user = userRepository.findById(id).orElse(null);
 	    user.setFirstName(userDetail.getFirstName());
 	    user.setLastName(userDetail.getLastName());
 	    user.setUsername(userDetail.getUsername());
 	    user.setPassword(userDetail.getPassword());
-	    return userEntityRepository.save(user);
+	    return userRepository.save(user);
     }
 
-    public Role createRole(Role role) {
-        return roleRepository.save(role);
+    public boolean checkIfEmailExist(String email) {
+        return userRepository.findByEmail(email) != null;
     }
 
-    public Permission createPermission(Permission permission) {
-        return permissionRepository.save(permission);
+    public boolean checkIfUsernameExist(String username) {
+        return userRepository.findByUsername(username) != null;
     }
 
 }

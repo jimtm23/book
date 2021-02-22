@@ -29,7 +29,9 @@ public class Role {
     @Field
     private String name;
 
-    private Collection<User> userEntities;
+    @Field
+    private Collection<User> users;
 
+    @Field
     private Collection<Permission> permissions;
 }

@@ -1,4 +1,45 @@
 package com.example.book.controller;
 
-public class RoleController {
+import com.example.book.helpers.CrudController;
+import com.example.book.model.Role;
+import com.example.book.service.RoleService;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URI;
+
+@AllArgsConstructor
+@RestController
+@RequestMapping("role")
+public class RoleController implements CrudController<Role> {
+
+    RoleService roleService;
+
+    @Override
+    public ResponseEntity<Role> show(String id) {
+        return ResponseEntity.ok(roleService.findById(id));
+    }
+
+    @Override
+    public ResponseEntity<Iterable<Role>> list() {
+        return ResponseEntity.ok(roleService.list());
+    }
+
+    @Override
+    public ResponseEntity<Role> create(Role role) {
+        Role newRole = roleService.save(role);
+        return ResponseEntity.created(URI.create("/role/show/" + newRole.getId())).build();
+    }
+
+    @Override
+    public ResponseEntity<Role> edit(String id, Role t) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Boolean> delete(String id) {
+        return null;
+    }
 }
