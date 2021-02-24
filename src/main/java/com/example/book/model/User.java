@@ -1,7 +1,6 @@
 package com.example.book.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -11,7 +10,7 @@ import org.springframework.data.couchbase.core.mapping.id.GeneratedValue;
 
 import javax.validation.constraints.NotNull;
 
-import java.util.Collection;
+import java.util.List;
 
 import static org.springframework.data.couchbase.core.mapping.id.GenerationStrategy.UNIQUE;
 
@@ -50,5 +49,5 @@ public class User {
     private Boolean isEnabled = true;
 
     @Field
-    private Collection<Role> roles;
+    private List<Role> roles;
 }

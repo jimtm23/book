@@ -5,11 +5,13 @@ import com.example.book.model.Role;
 import com.example.book.service.RoleService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 
+@CrossOrigin
 @AllArgsConstructor
 @RestController
 @RequestMapping("role")
@@ -34,12 +36,14 @@ public class RoleController implements CrudController<Role> {
     }
 
     @Override
-    public ResponseEntity<Role> edit(String id, Role t) {
-        return null;
+    public ResponseEntity<Role> edit(String id, Role role) {
+        Role thisRole = roleService.edit(id, role);
+        return ResponseEntity.created(URI.create("/role/show/" + thisRole.getId())).build();
     }
 
     @Override
     public ResponseEntity<Boolean> delete(String id) {
-        return null;
+        roleService.delete(id);
+        return ResponseEntity.ok(true);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
 public class CouchBaseConfig extends AbstractCouchbaseConfiguration {
     @Override
     public String getConnectionString() {
+        /*192.168.1.10*/
         return "couchbase://127.0.0.1";
     }
 

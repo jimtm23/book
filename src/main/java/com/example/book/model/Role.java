@@ -10,7 +10,8 @@ import org.springframework.data.couchbase.core.mapping.Field;
 import org.springframework.data.couchbase.core.mapping.id.GeneratedValue;
 
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
+
+import java.util.List;
 
 import static org.springframework.data.couchbase.core.mapping.id.GenerationStrategy.UNIQUE;
 
@@ -30,8 +31,9 @@ public class Role {
     private String name;
 
     @Field
-    private Collection<User> users;
+    private List<Permission> permissions;
 
-    @Field
-    private Collection<Permission> permissions;
+    public Role(String name) {
+        this.name = name;
+    }
 }

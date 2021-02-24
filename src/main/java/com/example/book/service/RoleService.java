@@ -28,7 +28,7 @@ public class RoleService implements CrudService<Role> {
     }
 
     @Override
-    public Role edit(Role role, String id) {
+    public Role edit(String id, Role role) {
         Role thisRole = roleRepository.findById(id).orElse(null);
 
         thisRole.setName(role.getName());
@@ -38,7 +38,13 @@ public class RoleService implements CrudService<Role> {
 
     @Override
     public Iterable<Role> list() {
-        return roleRepository.findAll();
+        Iterable<Role> roles = roleRepository.findAll();
+        roles.forEach(role -> {
+            role.getPermissions().forEach(permission -> {
+                System.out.println(permission);
+            });
+        });
+        return roles;
     }
 
     @Override

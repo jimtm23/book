@@ -7,8 +7,10 @@ import com.example.book.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.Valid;
 
 @CrossOrigin
@@ -20,30 +22,35 @@ public class BookController {
     private final BookService bookService;
     private final FileStorageService fileStorageService;
 
-    @GetMapping
-    public ResponseEntity<Iterable<Book>> bookList() {
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @GetMapping("/list")
+    public ResponseEntity<Iterable<Book>> list() {
         Iterable<Book> books = bookService.findAll();
 
         return ResponseEntity.ok(books);
     }
 
-    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/save")
     public ResponseEntity<Book> save(@Valid @RequestBody BookRequest book) {
 
         return ResponseEntity.ok(bookService.save(book));
     }
 
     @GetMapping("/show/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public Book show(@PathVariable String id) {
         return bookService.findById(id);
     }
 
     @PutMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public Book edit(@PathVariable String id, @RequestBody BookRequest book) {
         return bookService.edit(id, book);
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         bookService.delete(id);
         return ResponseEntity.ok().build();

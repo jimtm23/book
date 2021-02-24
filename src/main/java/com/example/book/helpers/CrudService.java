@@ -10,7 +10,7 @@ public interface CrudService<T> {
     public T save(T t);
 
     @Transactional
-    public T edit(T t, String id);
+    public T edit(String id, T t);
 
     public Iterable<T> list();
 

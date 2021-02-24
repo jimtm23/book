@@ -19,15 +19,15 @@ import javax.validation.constraints.NotNull;
 public class BookRequest {
 
     @NotBlank()
-    @NotNull
+    @NotNull(message = "Cannot be null")
     private String title;
 
     @NotBlank()
-    @NotNull
+    @NotNull(message = "Cannot be null")
     private String author;
 
     @NotBlank()
-    @NotNull
+    @NotNull(message = "Cannot be null")
     private String description;
 
     private String image;

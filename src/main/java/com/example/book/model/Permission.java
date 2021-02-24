@@ -16,7 +16,6 @@ import java.util.Collection;
 import static org.springframework.data.couchbase.core.mapping.id.GenerationStrategy.UNIQUE;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Document
@@ -30,5 +29,7 @@ public class Permission {
     @Field
     private String name;
 
-    private Collection<Role> roles;
+    public Permission(String name) {
+        this.name = name;
+    }
 }
