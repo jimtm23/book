@@ -1,6 +1,7 @@
 package com.example.book.controller;
 
 import com.example.book.Request.BookRequest;
+import com.example.book.Request.SampleRequest;
 import com.example.book.model.Book;
 import com.example.book.service.BookService;
 import com.example.book.service.FileStorageService;
@@ -56,11 +57,12 @@ public class BookController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(value = "/uploadImage", consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
-    public String uploadImage(@RequestPart Book book,
-                              @RequestPart MultipartFile image) {
-        fileStorageService.uploadFile(image);
-        String message =  "You successfully uploaded " + image.getOriginalFilename() + "!";
+    @PostMapping(value = "/uploadImage", consumes = {"multipart/form-data"})
+    public String uploadImage(@ModelAttribute SampleRequest sr) {
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> "+sr.getAuthor());
+        fileStorageService.uploadFile(sr.getImage());
+        String message =  "You successfully uploaded " + sr.getImage().getOriginalFilename() + "!";
+        System.out.println(message);
         return message;
     }
 

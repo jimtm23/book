@@ -37,8 +37,9 @@ public class SetupDataLoader implements
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        User user1 = userRepository.findByUsername("admin");
 
-        /*if (alreadySetup)
+        if (alreadySetup || user1 != null)
             return;
         Permission readPermission
                 = createPermissionIfNotFound("READ_PRIVILEGE");
@@ -48,7 +49,6 @@ public class SetupDataLoader implements
         List<Permission> adminPrivileges = Arrays.asList(readPermission, writePermission);
         Role adminRole = createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
         Role userRole = createRoleIfNotFound("ROLE_USER", Arrays.asList(readPermission));
-
         User admin = new User();
         admin.setFirstName("Admin");
         admin.setLastName("Admin");
@@ -67,7 +67,7 @@ public class SetupDataLoader implements
         user.setRoles(Arrays.asList(userRole));
         userRepository.save(user);
 
-        alreadySetup = true;*/
+        alreadySetup = true;
     }
 
     @Transactional
@@ -82,8 +82,7 @@ public class SetupDataLoader implements
     }
 
     @Transactional
-    Role createRoleIfNotFound(
-            String name, List<Permission> privileges) {
+    Role createRoleIfNotFound(String name, List<Permission> privileges) {
 
         Role role = roleRepository.findByName(name);
         if (role == null) {
