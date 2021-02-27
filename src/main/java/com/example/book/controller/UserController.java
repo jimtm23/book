@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
@@ -29,6 +30,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/list")
     public ResponseEntity<Iterable<User>> list() {
         return ResponseEntity.ok(userService.listUser());
@@ -55,12 +57,14 @@ public class UserController {
         return ResponseEntity.created(URI.create("/user/show/" + newUser.getId())).build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PutMapping("/edit/{id}")
     public ResponseEntity<User> edit(String id, User user) {
         User thisUser = userService.editUser(id, user);
         return ResponseEntity.ok(thisUser);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete")
     public ResponseEntity<Boolean> delete(String id) {
         return ResponseEntity.ok(userService.deleteUser(id));
