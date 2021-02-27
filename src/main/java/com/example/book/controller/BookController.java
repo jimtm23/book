@@ -59,7 +59,6 @@ public class BookController {
 
     @PostMapping(value = "/uploadImage", consumes = {"multipart/form-data"})
     public String uploadImage(@ModelAttribute SampleRequest sr) {
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> "+sr.getAuthor());
         fileStorageService.uploadFile(sr.getImage());
         String message =  "You successfully uploaded " + sr.getImage().getOriginalFilename() + "!";
         System.out.println(message);

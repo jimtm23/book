@@ -25,7 +25,6 @@ public class FileStorageService {
     public String uploadDir;
 
     public FileStorage uploadFile(MultipartFile file) {
-        System.out.println("------------------------"+file.getOriginalFilename());
         try {
             Path copyLocation = Paths
                     .get(uploadDir + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
