@@ -1,8 +1,6 @@
 package com.example.book.service;
 
 import com.example.book.exception.UserAlreadyExistException;
-import com.example.book.model.Permission;
-import com.example.book.model.Role;
 import com.example.book.model.User;
 import com.example.book.repository.PermissionRepository;
 import com.example.book.repository.RoleRepository;
@@ -38,7 +36,10 @@ public class UserRolePermissionService {
         }
 
 	    user.setPassword(passwordEncoder.encode(user.getPassword()));
-		return userRepository.save(user);
+        System.out.println(user);
+        User newUser = userRepository.save(user);
+
+		return newUser;
 	}
 	public Iterable<User> listUser() {
 	    return userRepository.findAll();

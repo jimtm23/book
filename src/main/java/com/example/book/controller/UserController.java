@@ -2,7 +2,9 @@ package com.example.book.controller;
 
 import com.example.book.Request.UserRequest;
 import com.example.book.exception.UserAlreadyExistException;
+import com.example.book.model.Role;
 import com.example.book.model.User;
+import com.example.book.service.RoleService;
 import com.example.book.service.UserRolePermissionService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
@@ -23,6 +27,7 @@ import java.util.Map;
 public class UserController {
 
     private final UserRolePermissionService userService;
+    private final RoleService roleService;
 
     @GetMapping("/show/{id}")
     public ResponseEntity<User> show(String id) {
@@ -38,13 +43,18 @@ public class UserController {
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@Valid @RequestBody UserRequest user) {
-//        ModelMapper modelMapper = new ModelMapper();
-        User newUser = new User();/* = modelMapper.map(user, User.class);*/
+        User newUser = new User();
+        List<Role> userRole = new ArrayList<>();
+        user.roles().forEach(role -> {
+            Role newRole = roleService.findById(role.id());
+            userRole.add(newRole);
+        });
         newUser.setUsername(user.username());
         newUser.setPassword(user.password());
         newUser.setEmail(user.email());
         newUser.setFirstName(user.firstName());
         newUser.setLastName(user.lastName());
+        newUser.setRoles(userRole);
         try {
             newUser = userService.createUser(newUser);
         } catch (UserAlreadyExistException e) {
@@ -59,7 +69,7 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PutMapping("/edit/{id}")
-    public ResponseEntity<User> edit(String id, User user) {
+    public ResponseEntity<User> edit(@Valid @RequestBody String id,@Valid @RequestBody  User user) {
         User thisUser = userService.editUser(id, user);
         return ResponseEntity.ok(thisUser);
     }

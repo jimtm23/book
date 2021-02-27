@@ -8,9 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import com.example.book.model.Role;
 
-import java.util.Collection;
+import java.util.List;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
@@ -40,5 +39,5 @@ public class UserRequest {
     @NotNull(message = "Cannot be null")
     private String password;
     
-    private Collection<RoleRequest> roles;
+    private List<RoleRequest> roles;
 }
