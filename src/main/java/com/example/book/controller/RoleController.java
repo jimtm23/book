@@ -24,7 +24,7 @@ public class RoleController {
         return ResponseEntity.ok(roleService.findById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasAnyRole('IS_AUTHENTICATED_ANONYMOUSLY')")
     @GetMapping("/list")
     public ResponseEntity<Iterable<Role>> list() {
         return ResponseEntity.ok(roleService.list());

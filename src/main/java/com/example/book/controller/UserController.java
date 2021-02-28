@@ -35,7 +35,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/list")
     public ResponseEntity<Iterable<User>> list() {
         return ResponseEntity.ok(userService.listUser());
@@ -45,10 +45,12 @@ public class UserController {
     public ResponseEntity<?> create(@Valid @RequestBody UserRequest user) {
         User newUser = new User();
         List<Role> userRole = new ArrayList<>();
+        System.out.println("From Request "+user.roles());
         user.roles().forEach(role -> {
             Role newRole = roleService.findById(role.id());
             userRole.add(newRole);
         });
+        System.out.println("FROM DB "+userRole);
         newUser.setUsername(user.username());
         newUser.setPassword(user.password());
         newUser.setEmail(user.email());
