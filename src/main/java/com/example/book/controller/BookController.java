@@ -1,6 +1,7 @@
 package com.example.book.controller;
 
 import com.example.book.Request.BookRequest;
+import com.example.book.Request.BookResponse;
 import com.example.book.Request.SampleRequest;
 import com.example.book.model.Book;
 import com.example.book.service.BookService;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 
 @CrossOrigin
 @RestController
@@ -25,10 +28,22 @@ public class BookController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/list")
-    public ResponseEntity<Iterable<Book>> list() {
+    public ResponseEntity<Iterable<BookResponse>> list() {
         Iterable<Book> books = bookService.findAll();
+        Iterable<BookResponse> brs = new ArrayList<>();
 
-        return ResponseEntity.ok(books);
+        books.forEach(book -> {
+            BookResponse br = new BookResponse();
+            br.id(book.getId());
+            br.author(book.getAuthor());
+            br.description(book.getDescription());
+            br.image(book.getImage());
+            br.title(book.getTitle());
+            br.publisher(book.getPublisher());
+            br.dateCreated(ZonedDateTime.parse(book.getDateCreated()));
+            ((ArrayList<BookResponse>) brs).add(br);
+        });
+        return ResponseEntity.ok(brs);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -40,8 +55,17 @@ public class BookController {
 
     @GetMapping("/show/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public Book show(@PathVariable String id) {
-        return bookService.findById(id);
+    public BookResponse show(@PathVariable String id) {
+        Book book = bookService.findById(id);
+        BookResponse br = new BookResponse();
+        br.id(book.getId());
+        br.author(book.getAuthor());
+        br.description(book.getDescription());
+        br.image(book.getImage());
+        br.title(book.getTitle());
+        br.publisher(book.getPublisher());
+        br.dateCreated(ZonedDateTime.parse(book.getDateCreated()));
+        return br;
     }
 
     @PutMapping("/edit/{id}")

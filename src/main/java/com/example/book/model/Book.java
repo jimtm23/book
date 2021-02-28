@@ -38,7 +38,7 @@ public class Book {
 
     @Field String publisher;
 
-    @Field private ZonedDateTime dateCreated;
+    @Field String dateCreated;
     /*@Field
     private  FileStorage image;*/
 

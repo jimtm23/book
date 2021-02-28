@@ -30,7 +30,7 @@ public class BookService {
         newBook.setDescription(bookRequest.description());
         newBook.setImage(bookRequest.image());
         newBook.setPublisher(bookRequest.publisher());
-        newBook.setDateCreated(ZonedDateTime.now());
+        newBook.setDateCreated(ZonedDateTime.now().toString());
         return bookRepository.save(newBook);
     }
 
