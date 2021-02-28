@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -28,6 +29,8 @@ public class BookService {
         newBook.setTitle(bookRequest.title());
         newBook.setDescription(bookRequest.description());
         newBook.setImage(bookRequest.image());
+        newBook.setPublisher(bookRequest.publisher());
+        newBook.setDateCreated(ZonedDateTime.now());
         return bookRepository.save(newBook);
     }
 
@@ -37,6 +40,7 @@ public class BookService {
         book.setAuthor(bookRequest.author());
         book.setTitle(bookRequest.title());
         book.setDescription(bookRequest.description());
+        book.setPublisher(bookRequest.publisher());
         book.setImage(bookRequest.image());
         bookRepository.save(book);
         return book;

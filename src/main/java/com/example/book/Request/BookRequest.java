@@ -6,9 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.springframework.data.couchbase.core.mapping.Field;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.ZonedDateTime;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
@@ -18,17 +20,21 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class BookRequest {
 
-    @NotBlank()
+    @NotBlank(message = "Title is required!")
     @NotNull(message = "Cannot be null")
     private String title;
 
-    @NotBlank()
+    @NotBlank(message = "Author is required!")
     @NotNull(message = "Cannot be null")
     private String author;
 
-    @NotBlank()
+    @NotBlank(message = "Description is required!")
     @NotNull(message = "Cannot be null")
     private String description;
+
+    @NotBlank(message = "Publisher is required!")
+    @NotNull(message = "Cannot be null")
+    private String publisher;
 
     private String image;
 }

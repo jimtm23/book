@@ -8,6 +8,8 @@ import org.springframework.data.couchbase.core.mapping.id.GeneratedValue;
 
 import javax.validation.constraints.NotNull;
 
+import java.time.ZonedDateTime;
+
 import static org.springframework.data.couchbase.core.mapping.id.GenerationStrategy.UNIQUE;
 
 @Data
@@ -34,6 +36,9 @@ public class Book {
 
     @Field String image;
 
+    @Field String publisher;
+
+    @Field private ZonedDateTime dateCreated;
     /*@Field
     private  FileStorage image;*/
 
