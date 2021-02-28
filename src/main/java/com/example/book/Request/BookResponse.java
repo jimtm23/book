@@ -29,5 +29,5 @@ public class BookResponse {
 
     private String image;
 
-    private ZonedDateTime dateCreated;
+    private String date;
 }

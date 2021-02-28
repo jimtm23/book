@@ -36,5 +36,9 @@ public class BookRequest {
     @NotNull(message = "Cannot be null")
     private String publisher;
 
+    @NotBlank(message = "Date is required!")
+    @NotNull(message = "Cannot be null")
+    private String date;
+
     private String image;
 }

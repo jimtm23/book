@@ -38,7 +38,7 @@ public class Book {
 
     @Field String publisher;
 
-    @Field String dateCreated;
+    @Field String date;
     /*@Field
     private  FileStorage image;*/
 

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 @CrossOrigin
@@ -40,7 +39,7 @@ public class BookController {
             br.image(book.getImage());
             br.title(book.getTitle());
             br.publisher(book.getPublisher());
-            br.dateCreated(ZonedDateTime.parse(book.getDateCreated()));
+            br.date(book.getDate());
             ((ArrayList<BookResponse>) brs).add(br);
         });
         return ResponseEntity.ok(brs);
@@ -64,7 +63,7 @@ public class BookController {
         br.image(book.getImage());
         br.title(book.getTitle());
         br.publisher(book.getPublisher());
-        br.dateCreated(ZonedDateTime.parse(book.getDateCreated()));
+        br.date(book.getDate());
         return br;
     }
 
