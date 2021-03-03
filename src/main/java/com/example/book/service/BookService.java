@@ -2,15 +2,15 @@ package com.example.book.service;
 
 import com.example.book.Request.BookRequest;
 import com.example.book.exception.ResourceNotFoundException;
+import com.example.book.model.Author;
 import com.example.book.model.Book;
-import com.example.book.model.FileStorage;
+import com.example.book.repository.AuthorRepository;
 import com.example.book.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,29 +20,48 @@ public class BookService {
     BookRepository bookRepository;
 
     @Autowired
+    AuthorRepository authorRepository;
+
+    @Autowired
     FileStorageService fileStorageService;
 
     @Transactional
     public Book save(BookRequest bookRequest) {
         Book newBook = new Book();
-        newBook.setAuthor(bookRequest.author());
+        List<Author> authors = new ArrayList<>();
+        bookRequest.authors().forEach(author -> {
+            Author a = new Author();
+            a.setFullName(author.fullName());
+            authors.add(a);
+        });
+        authorRepository.saveAll(authors);
+        newBook.setISBN(bookRequest.ISBN());
+        newBook.setAuthors(authors);
         newBook.setTitle(bookRequest.title());
         newBook.setDescription(bookRequest.description());
         newBook.setImage(bookRequest.image());
         newBook.setPublisher(bookRequest.publisher());
-        newBook.setDate(bookRequest.date());
+        newBook.setDateAdded( bookRequest.date()); //
         return bookRepository.save(newBook);
     }
 
     @Transactional
     public Book edit(String id, BookRequest bookRequest) {
         Book book = bookRepository.findById(id).orElse(null);
-        book.setAuthor(bookRequest.author());
+        List<Author> authors = new ArrayList<>();
+        bookRequest.authors().forEach(author -> {
+            Author a = new Author();
+            a.setFullName(author.fullName());
+            authors.add(a);
+        });
+        authorRepository.saveAll(authors);
+        book.setISBN(bookRequest.ISBN());
+        book.setAuthors(authors);
         book.setTitle(bookRequest.title());
         book.setDescription(bookRequest.description());
         book.setPublisher(bookRequest.publisher());
         book.setImage(bookRequest.image());
-        book.setDate(bookRequest.date());
+        book.setDateAdded(bookRequest.date());
         bookRepository.save(book);
         return book;
     }

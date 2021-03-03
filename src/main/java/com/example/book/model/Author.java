@@ -1,14 +1,15 @@
 package com.example.book.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.couchbase.core.mapping.Document;
 import org.springframework.data.couchbase.core.mapping.Field;
 import org.springframework.data.couchbase.core.mapping.id.GeneratedValue;
 
 import javax.validation.constraints.NotNull;
-
-import java.util.List;
 
 import static org.springframework.data.couchbase.core.mapping.id.GenerationStrategy.UNIQUE;
 
@@ -17,29 +18,13 @@ import static org.springframework.data.couchbase.core.mapping.id.GenerationStrat
 @AllArgsConstructor
 @NoArgsConstructor
 @Document
-public class Book {
+public class Author {
 
-
-    @Id @GeneratedValue(strategy = UNIQUE)
+    @Id
+    @GeneratedValue(strategy = UNIQUE)
     private String id;
 
     @NotNull
     @Field
-    private String title;
-
-    @NotNull
-    @Field
-    private List<Author> authors;
-
-    @Field
-    private String description;
-
-    @Field String image;
-
-    @Field String publisher;
-
-    @Field String dateAdded;
-
-    @Field String ISBN;
-
+    private String fullName;
 }

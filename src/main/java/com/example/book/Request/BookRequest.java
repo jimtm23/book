@@ -1,16 +1,15 @@
 package com.example.book.Request;
 
-        import com.fasterxml.jackson.annotation.JsonAutoDetect;
-        import com.fasterxml.jackson.annotation.JsonInclude;
-        import lombok.AllArgsConstructor;
-        import lombok.Data;
-        import lombok.NoArgsConstructor;
-        import lombok.experimental.Accessors;
-        import org.springframework.data.couchbase.core.mapping.Field;
-
-        import javax.validation.constraints.NotBlank;
-        import javax.validation.constraints.NotNull;
-        import java.time.ZonedDateTime;
+import com.example.book.model.Author;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
@@ -24,9 +23,8 @@ public class BookRequest {
     @NotNull(message = "Cannot be null")
     private String title;
 
-    @NotBlank(message = "Author is required!")
     @NotNull(message = "Cannot be null")
-    private String author;
+    private List<AuthorRequest> authors;
 
     @NotBlank(message = "Description is required!")
     @NotNull(message = "Cannot be null")
@@ -40,5 +38,11 @@ public class BookRequest {
     @NotNull(message = "Cannot be null")
     private String date;
 
+    @NotBlank(message = "ISBN is required!")
+    @NotNull(message = "Cannot be null")
+    private String ISBN;
+
     private String image;
+
+
 }

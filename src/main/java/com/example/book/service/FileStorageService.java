@@ -5,15 +5,22 @@ import com.example.book.model.FileStorage;
 import com.example.book.repository.FileStorageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class FileStorageService {
@@ -42,5 +49,17 @@ public class FileStorageService {
             throw new FileStorageException("Could not store file " + file.getOriginalFilename()
                     + ". Please try again!");
         }
+    }
+
+    public ArrayList downloadFile(String resourceId) throws IOException {
+        FileStorage fileStorage = fileStorageRepository.findById(resourceId).orElse(null);
+
+        File file = new File(uploadDir + File.separator + fileStorage.getFileName());
+        Path path = Paths.get(file.getAbsolutePath());
+        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+        ArrayList response = new ArrayList();
+        response.add(fileStorage);
+        response.add(resource);
+        return response;
     }
 }
