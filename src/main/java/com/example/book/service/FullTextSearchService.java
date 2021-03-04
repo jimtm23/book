@@ -28,13 +28,12 @@ public class FullTextSearchService {
         SearchResult result = null;
         List<FTSResponse> responses = new ArrayList<>();
         try {
-            MatchQuery mq = SearchQuery.match(searchterm).field("title").fuzziness(1);
-            result = cluster.searchQuery("book_index", mq, SearchOptions.searchOptions().highlight(HighlightStyle.HTML, "title", "description", "authors.fullName")); //SearchQuery.queryString(searchterm)
+//            MatchQuery mq = SearchQuery.match(searchterm).field("title").fuzziness(1);
+            result = cluster.searchQuery("book_index", SearchQuery.queryString(searchterm), SearchOptions.searchOptions().highlight(HighlightStyle.HTML, "title", "description", "authors.fullName")); //
 
             for (SearchRow row : result.rows()) {
                 FTSResponse response = new FTSResponse();
                 response.id(row.id());
-                System.out.println(row.fragments());
                 response.author(getRowData(row, "authors.fullName"));
                 response.description(getRowData(row, "description"));
                 response.score(row.score());
