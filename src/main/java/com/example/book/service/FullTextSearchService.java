@@ -3,13 +3,20 @@ package com.example.book.service;
 import com.couchbase.client.core.error.CouchbaseException;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
+import com.couchbase.client.java.json.JsonObject;
+import com.couchbase.client.java.search.HighlightStyle;
+import com.couchbase.client.java.search.SearchOptions;
 import com.couchbase.client.java.search.SearchQuery;
 import com.couchbase.client.java.search.queries.MatchQuery;
 import com.couchbase.client.java.search.result.SearchResult;
 import com.couchbase.client.java.search.result.SearchRow;
+import com.example.book.Request.FTSResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -17,14 +24,22 @@ public class FullTextSearchService {
     @Autowired
     private Cluster cluster;
 
-    public SearchResult myMethod(String searchterm) {
+    public List<FTSResponse> myMethod(String searchterm) {
         SearchResult result = null;
+        List<FTSResponse> responses = new ArrayList<>();
         try {
-             result = cluster
-                    .searchQuery("book_index", SearchQuery.queryString(searchterm));
+            MatchQuery mq = SearchQuery.match(searchterm).field("title").fuzziness(1);
+            result = cluster.searchQuery("book_index", mq, SearchOptions.searchOptions().highlight(HighlightStyle.HTML, "title", "description", "authors.fullName")); //SearchQuery.queryString(searchterm)
 
             for (SearchRow row : result.rows()) {
-                System.out.println("Found row: " + row);
+                FTSResponse response = new FTSResponse();
+                response.id(row.id());
+                System.out.println(row.fragments());
+                response.author(getRowData(row, "authors.fullName"));
+                response.description(getRowData(row, "description"));
+                response.score(row.score());
+                response.title(getRowData(row, "title"));
+                responses.add(response);
             }
 
             System.out.println("Reported total rows: "
@@ -32,6 +47,10 @@ public class FullTextSearchService {
         } catch (CouchbaseException ex) {
             ex.printStackTrace();
         }
-        return result;
+        return responses;
+    }
+
+    private String getRowData(SearchRow row, String field) {
+        return row.fragments().get(field).get(0);
     }
 }

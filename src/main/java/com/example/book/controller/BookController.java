@@ -3,12 +3,15 @@ package com.example.book.controller;
 import com.couchbase.client.java.search.result.SearchResult;
 import com.example.book.Request.BookRequest;
 import com.example.book.Request.BookResponse;
+import com.example.book.Request.FTSResponse;
 import com.example.book.Request.SampleRequest;
 import com.example.book.model.Book;
 import com.example.book.model.FileStorage;
 import com.example.book.service.BookService;
 import com.example.book.service.FileStorageService;
 import com.example.book.service.FullTextSearchService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -56,6 +60,11 @@ public class BookController {
     @PostMapping("/save")
     public ResponseEntity<Book> save(@Valid @RequestBody BookRequest book) {
         return ResponseEntity.ok(bookService.save(book));
+    }
+
+    @PostMapping("/saveBatch")
+    public ResponseEntity<Boolean> saveBatch(@Valid @RequestBody List<BookRequest> books) {
+        return ResponseEntity.ok(bookService.saveAll(books));
     }
 
     @GetMapping("/show/{id}")
@@ -128,8 +137,8 @@ public class BookController {
     }
 
     @GetMapping("fts")
-    public ResponseEntity<SearchResult> search(@RequestParam String term) {
-        SearchResult searchResult = fts.myMethod(term);
-        return ResponseEntity.ok(searchResult);
+    public ResponseEntity<List<FTSResponse>> search(@RequestParam String term) {
+        List<FTSResponse> responses = fts.myMethod(term);
+        return ResponseEntity.ok(responses);
     }
 }

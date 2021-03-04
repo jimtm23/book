@@ -36,7 +36,7 @@ public class BookService {
         });
         authorRepository.saveAll(authors);
         newBook.setISBN(bookRequest.ISBN());
-        newBook.setAuthors(authors);
+//        newBook.setAuthors(authors);
         newBook.setTitle(bookRequest.title());
         newBook.setDescription(bookRequest.description());
         newBook.setImage(bookRequest.image());
@@ -54,7 +54,7 @@ public class BookService {
             a.setFullName(author.fullName());
             authors.add(a);
         });
-        authorRepository.saveAll(authors);
+//        authorRepository.saveAll(authors);
         book.setISBN(bookRequest.ISBN());
         book.setAuthors(authors);
         book.setTitle(bookRequest.title());
@@ -88,5 +88,29 @@ public class BookService {
     public List<Book> findAllByTitle(String title) {
         List<Book> books = bookRepository.findAllByTitleLike("%"+title+"%");
         return books;
+    }
+
+    public Boolean saveAll(List<BookRequest> books) {
+        List<Book> newBooks = new ArrayList<>();
+        books.forEach(bookRequest -> {
+            Book newBook = new Book();
+            List<Author> authors = new ArrayList<>();
+            bookRequest.authors().forEach(author -> {
+                Author a = new Author();
+                a.setFullName(author.fullName());
+                authors.add(a);
+            });
+//            authorRepository.saveAll(authors);
+            newBook.setISBN(bookRequest.ISBN());
+            newBook.setAuthors(authors);
+            newBook.setTitle(bookRequest.title());
+            newBook.setDescription(bookRequest.description());
+            newBook.setImage(bookRequest.image());
+            newBook.setPublisher(bookRequest.publisher());
+            newBook.setDateAdded( bookRequest.date());
+            newBooks.add(newBook);
+        } );
+        bookRepository.saveAll(newBooks);
+        return true;
     }
 }
